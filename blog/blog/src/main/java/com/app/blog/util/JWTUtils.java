@@ -33,7 +33,7 @@ public class JWTUtils {
         claims.put("name", user.getUserName());
         claims.put("email", user.getEmail());
         claims.put("user_id", user.getUserId());
-        claims.setSubject("MY Blog");
+        claims.setSubject(user.getEmail());
         claims.setIssuedAt(new Date());
 
         Collection<? extends GrantedAuthority> roles = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));;

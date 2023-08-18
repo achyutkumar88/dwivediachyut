@@ -30,14 +30,17 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		// http.csrf().disable()
+		 //http.csrf().disable()
 		//	.authorizeRequests().antMatchers("/**").permitAll();
-		http.csrf().disable()
+		http.csrf().disable().cors().disable()
 				.authorizeRequests().antMatchers("/api/**").hasRole("USER")
-				.antMatchers("/authenticate").permitAll().anyRequest().authenticated()
+				.antMatchers("/login","/h2-console/**","/register").permitAll()
+				.anyRequest().authenticated()
 				.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).
 				and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
 				and().addFilterBefore(customJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.csrf().disable();
+		http.headers().frameOptions().disable();
 	}
 
 

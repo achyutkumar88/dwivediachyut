@@ -49,29 +49,18 @@ public class UserController extends EntitiyHawk {
     @Autowired
     private JWTUtils jwtUtil;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-   //@PostMapping(value = { "/authenticate" }, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE )
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
             throws Exception {
-        System.out.println("Inside createAuthenticationToken method ");
-        try {
-            System.out.println("email ID ----->"+authenticationRequest.getEmailid());
-            System.out.println("Password -------------> "+authenticationRequest.getPassword());
-            //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-              //      authenticationRequest.getEmailid(), authenticationRequest.getPassword()));
-        }catch(Exception e) {
-            System.out.println(e);
-        }
-        System.out.println(" In Middle -------------->");
-       // Users user = loginService.loadUserByUsername(authenticationRequest.getEmailid());
-        Users user = new Users();
-        user.setEmail("achyutkumar88@gmail.com");
-        user.setUserId(1234);
-        user.setUserName("achyut");
-        System.out.println(" DB call success -------------->");
+        Users user = loginService.loadUserByUsername(authenticationRequest.getEmailid());
         String token = jwtUtil.CreateJWTToken(user);
-        System.out.println("get toke ------------------>"+token);
         return ResponseEntity.ok(new AuthenticationResponse(token));
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerUser(@RequestBody Users user) throws Exception {
+        String result = loginService.save(user);
+        return ResponseEntity.ok(result);
     }
 
 

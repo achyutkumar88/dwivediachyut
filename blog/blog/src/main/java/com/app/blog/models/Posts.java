@@ -7,6 +7,8 @@ package com.app.blog.models;
  */
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -57,6 +59,7 @@ public class Posts implements Serializable {
     private Date updatedOn;
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
     @JoinColumn(name = "published_by", referencedColumnName = "user_id")
     @ManyToOne
     private Users publishedBy;
