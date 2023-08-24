@@ -21,11 +21,11 @@ import org.hibernate.validator.constraints.Length;
 public class LoginDto {
 
     @NotBlank(message = "should not be empty")
-    @Length(max = 25)
+   // @Length(max = 25)
     @Valid
     String email;
     @NotBlank(message = "should not be empty")
-    @Length(max = 25)
+    //@Length(max = 25)
     @Valid
     String password;
 

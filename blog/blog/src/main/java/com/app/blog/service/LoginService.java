@@ -23,15 +23,10 @@ public class LoginService  {
 	private UserRepository userRepository;
 	
 	//@Override
-	public Users loadUserByUsername(String emailid) throws UsernameNotFoundException {
+	public List<Users> loadUserByUsername(String emailid) {
 		List<SimpleGrantedAuthority> roles = null;	
 		List<Users> result = userRepository.findByEmail(emailid);
-		
-		if (result != null) {
-			Users user = result.get(0);
-			return user;
-		}
-		throw new UsernameNotFoundException("User not found with the name " + emailid);
+		return result;
 	}
 
 	public String save(Users user) {

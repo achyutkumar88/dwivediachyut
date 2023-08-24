@@ -51,10 +51,10 @@ public class GlobalService {
             Optional<Users> user = userRepository.findById(userId);
             if(user.get().getEmail().equals(emailId)){
                 postRepository.deleteById(postId);
-                return "Post deleted successfully ";
+                return "Post Deleted";
             }
         }
-        return "Post not present ";
+        return "Post Not Found ";
     }
 
     public String updatePost(UpdatePostDTO updatePostDTO, String emailId) {
@@ -64,7 +64,7 @@ public class GlobalService {
             Optional<Users> user = userRepository.findById(userId);
             if(user.get().getEmail().equals(emailId)){
                 postRepository.updatePost(updatePostDTO.getPost_id(), updatePostDTO.getBody(), updatePostDTO.getTitle());
-                return "Post Updated successfully ";
+                return "Post updated ";
             }
         }
         return "Post not present ";

@@ -50,17 +50,30 @@ public class UserController extends EntitiyHawk {
     private JWTUtils jwtUtil;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginDto loginDto)
             throws Exception {
-        Users user = loginService.loadUserByUsername(authenticationRequest.getEmailid());
-        String token = jwtUtil.CreateJWTToken(user);
-        return ResponseEntity.ok(new AuthenticationResponse(token));
+        String token = "";
+        if(loginDto.getEmail() != null){
+            List<Users> users = loginService.loadUserByUsername(loginDto.getEmail());
+            if (users != null && users.size() != 0) {
+                Users user = users.get(0);
+                token = jwtUtil.CreateJWTToken(user);
+            }else {
+                token = "Invalid Username or Password";
+            }
+        }else {
+            token = "Unable to read JSON value";
+        }
+
+
+        return genericSuccess(token);
+       // return ResponseEntity.ok();
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> registerUser(@RequestBody Users user) throws Exception {
         String result = loginService.save(user);
-        return ResponseEntity.ok(result);
+        return genericSuccess(result);
     }
 
 

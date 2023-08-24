@@ -73,15 +73,18 @@ public class GlobalController extends EntitiyHawk {
     {
         long count = globalService.getPostCount();
         //return count;
-        return ResponseEntity.ok(genericSuccess(count));
+        return genericSuccess(count);
     }
 
     @GetMapping(value = "/getPostByUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getPostByUser(Integer userId)
     {
         List<Posts> posts = globalService.getPostByUser(userId);
+        if(posts.size()==0){
+            return genericSuccess("No posts by user Id ");
+        }
         List<PostDTO> postDTOList = prepareDTO(posts);
-        return ResponseEntity.ok(genericSuccess(postDTOList));
+        return genericSuccess(postDTOList);
     }
 
     @GetMapping(value = "/getUserPost", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -91,25 +94,25 @@ public class GlobalController extends EntitiyHawk {
         String emailId = user.getUsername();
         List<Posts> posts = globalService.getPostforUser(postId, emailId);
         List<PostDTO> postDTOList = prepareDTO(posts);
-        return ResponseEntity.ok(genericSuccess(postDTOList));
+        return genericSuccess(postDTOList);
     }
 
-    @DeleteMapping(value = "/deletePost")
+    @GetMapping(value = "/deletePost")
     public ResponseEntity<?> deletePost(Integer postId)
     {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String emailId = user.getUsername();
         String result = globalService.deletePost(postId, emailId);
-        return ResponseEntity.ok(result);
+        return genericSuccess(result);
     }
 
-    @PutMapping(value = "/updatePost")
+    @PostMapping(value = "/updatePost")
     ResponseEntity<?> updateProduct(@RequestBody UpdatePostDTO updatePostDTO)
     {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String emailId = user.getUsername();
         String result = globalService.updatePost(updatePostDTO, emailId);
-        return ResponseEntity.ok(result);
+        return genericSuccess(result);
     }
 
 }
